@@ -25,4 +25,103 @@ router.get('/single', async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+// GET all contacts
+router.get('/', async (req, res) => {
+  try {
+    const db = getDb();
+    const result = await db.collection('contacts').find();
+    const contacts = await result.toArray();
+    res.setHeader('Content-Type', 'application/json');
+    res.status(200).json(contacts);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// GET single contact by query id
+router.get('/single', async (req, res) => {
+  try {
+    const contactId = new ObjectId(req.query.id);
+    const db = getDb();
+    const result = await db.collection('contacts').findOne({ _id: contactId });
+    res.setHeader('Content-Type', 'application/json');
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+/**
+ * POST /contacts
+ * Create a new contact
+ */
+router.post('/', async (req, res) => {
+  try {
+    const { firstName, lastName, email, favoriteColor, birthday } = req.body;
+
+    if (!firstName || !lastName || !email || !favoriteColor || !birthday) {
+      return res.status(400).json({ message: 'All fields are required.' });
+    }
+
+    const db = getDb();
+    const result = await db.collection('contacts').insertOne({
+      firstName,
+      lastName,
+      email,
+      favoriteColor,
+      birthday,
+    });
+
+    res.status(201).json({ _id: result.insertedId });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+/**
+ * PUT /contacts/:id
+ * Update a contact by id
+ */
+router.put('/:id', async (req, res) => {
+  try {
+    const contactId = new ObjectId(req.params.id);
+    const { firstName, lastName, email, favoriteColor, birthday } = req.body;
+
+    const db = getDb();
+    const result = await db.collection('contacts').updateOne(
+      { _id: contactId },
+      { $set: { firstName, lastName, email, favoriteColor, birthday } }
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ message: 'Contact not found.' });
+    }
+
+    res.status(200).json({ message: 'Contact updated successfully.' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+/**
+ * DELETE /contacts/:id
+ * Delete a contact by id
+ */
+router.delete('/:id', async (req, res) => {
+  try {
+    const contactId = new ObjectId(req.params.id);
+    const db = getDb();
+    const result = await db.collection('contacts').deleteOne({ _id: contactId });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: 'Contact not found.' });
+    }
+
+    res.status(200).json({ message: 'Contact deleted successfully.' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;
