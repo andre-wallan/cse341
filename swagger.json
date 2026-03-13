@@ -54,6 +54,28 @@
       }
     },
     "/contacts/{id}": {
+      "get": {
+    "summary": "Get a contact by ID",
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": { "type": "string" }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "A single contact",
+        "content": {
+          "application/json": {}
+        }
+      },
+      "404": {
+        "description": "Contact not found"
+      }
+    }
+  },
       "put": {
         "summary": "Update a contact by ID",
         "parameters": [

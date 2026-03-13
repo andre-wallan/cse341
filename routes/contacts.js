@@ -2,29 +2,6 @@ const express = require('express');
 const router = express.Router();
 const { getDb } = require('../db/connect');
 const ObjectId = require('mongodb').ObjectId;
-router.get('/', async (req, res) => {
-  try {
-    const db = getDb();
-    const result = await db.collection('contacts').find();
-    const contacts = await result.toArray();
-    res.setHeader('Content-Type', 'application/json');
-    res.status(200).json(contacts);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-router.get('/single', async (req, res) => {
-  try {
-    const contactId = new ObjectId(req.query.id);
-    const db = getDb();
-    const result = await db.collection('contacts').findOne({ _id: contactId });
-
-    res.setHeader('Content-Type', 'application/json');
-    res.status(200).json(result);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
 
 // GET all contacts
 router.get('/', async (req, res) => {
@@ -32,30 +9,26 @@ router.get('/', async (req, res) => {
     const db = getDb();
     const result = await db.collection('contacts').find();
     const contacts = await result.toArray();
-    res.setHeader('Content-Type', 'application/json');
     res.status(200).json(contacts);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-// GET single contact by query id
-router.get('/single', async (req, res) => {
+// GET contact by ID
+router.get('/:id', async (req, res) => {
   try {
-    const contactId = new ObjectId(req.query.id);
+    const contactId = new ObjectId(req.params.id);
     const db = getDb();
     const result = await db.collection('contacts').findOne({ _id: contactId });
-    res.setHeader('Content-Type', 'application/json');
+
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json(error);
   }
 });
 
-/**
- * POST /contacts
- * Create a new contact
- */
+// POST create contact
 router.post('/', async (req, res) => {
   try {
     const { firstName, lastName, email, favoriteColor, birthday } = req.body;
@@ -70,7 +43,7 @@ router.post('/', async (req, res) => {
       lastName,
       email,
       favoriteColor,
-      birthday,
+      birthday
     });
 
     res.status(201).json({ _id: result.insertedId });
@@ -79,10 +52,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-/**
- * PUT /contacts/:id
- * Update a contact by id
- */
+// PUT update contact
 router.put('/:id', async (req, res) => {
   try {
     const contactId = new ObjectId(req.params.id);
@@ -104,10 +74,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-/**
- * DELETE /contacts/:id
- * Delete a contact by id
- */
+// DELETE contact
 router.delete('/:id', async (req, res) => {
   try {
     const contactId = new ObjectId(req.params.id);
