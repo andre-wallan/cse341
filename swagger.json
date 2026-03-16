@@ -10,69 +10,49 @@
       "url": "https://cse341-0qm8.onrender.com"
     }
   ],
- "paths": {
-  "/contacts": {
-    "get": {
-      "summary": "Get all contacts",
-      "responses": {
-        "200": {
-          "description": "List of contacts",
+  "paths": {
+    "/contacts": {
+      "get": {
+        "summary": "Get all contacts",
+        "responses": {
+          "200": {
+            "description": "List of contacts",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new contact",
+        "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "_id": { "type": "string" },
-                    "firstName": { "type": "string" },
-                    "lastName": { "type": "string" },
-                    "email": { "type": "string" },
-                    "favoriteColor": { "type": "string" },
-                    "birthday": { "type": "string", "format": "date" }
-                  }
-                }
+                "type": "object",
+                "properties": {
+                  "firstName": { "type": "string" },
+                  "lastName": { "type": "string" },
+                  "email": { "type": "string" },
+                  "favoriteColor": { "type": "string" },
+                  "birthday": { "type": "string", "format": "date" }
+                },
+                "required": ["firstName", "lastName", "email", "favoriteColor", "birthday"]
               }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Contact created",
+            "content": {
+              "application/json": {}
             }
           }
         }
       }
     },
-
-    "post": {
-      "summary": "Create a new contact",
-      "requestBody": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "firstName": { "type": "string" },
-                "lastName": { "type": "string" },
-                "email": { "type": "string" },
-                "favoriteColor": { "type": "string" },
-                "birthday": { "type": "string", "format": "date" }
-              },
-              "required": [
-                "firstName",
-                "lastName",
-                "email",
-                "favoriteColor",
-                "birthday"
-              ]
-            }
-          }
-        }
-      },
-      "responses": {
-        "201": {
-          "description": "Contact created"
-        }
-      }
-    }
-  },
-
     "/contacts/{id}": {
       "get": {
     "summary": "Get a contact by ID",
