@@ -7,13 +7,13 @@ const ObjectId = require('mongodb').ObjectId;
 router.get('/', async (req, res) => {
   try {
     const db = getDb();
-    const contacts = await db.collection('contacts').find().toArray();
-    res.status(200).json({ contacts }); // wrap in an object
+    const result = await db.collection('contacts').find();
+    const contacts = await result.toArray();
+    res.status(200).json({ contacts: contacts }); // wrap in object
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
-
 // GET contact by ID
 router.get('/:id', async (req, res) => {
   try {
