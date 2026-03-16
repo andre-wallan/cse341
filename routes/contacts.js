@@ -7,9 +7,8 @@ const ObjectId = require('mongodb').ObjectId;
 router.get('/', async (req, res) => {
   try {
     const db = getDb();
-    const result = await db.collection('contacts').find();
-    const contacts = await result.toArray();
-    res.status(200).json(contacts);
+    const contacts = await db.collection('contacts').find().toArray();
+    res.status(200).json({ contacts }); // wrap in an object
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
