@@ -11,18 +11,36 @@
     }
   ],
   "paths": {
-    "/contacts": {
-      "get": {
-        "summary": "Get all contacts",
-        "responses": {
-          "200": {
-            "description": "List of contacts",
-            "content": {
-              "application/json": {}
+  "/contacts": {
+    "get": {
+      "summary": "Get all contacts",
+      "responses": {
+        "200": {
+          "description": "List of contacts",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "_id": { "type": "string" },
+                    "firstName": { "type": "string" },
+                    "lastName": { "type": "string" },
+                    "email": { "type": "string" },
+                    "favoriteColor": { "type": "string" },
+                    "birthday": { "type": "string", "format": "date" }
+                  }
+                }
+              }
             }
           }
         }
-      },
+      }
+    }
+  }
+},
+          
       "post": {
         "summary": "Create a new contact",
         "requestBody": {
@@ -51,8 +69,7 @@
             }
           }
         }
-      }
-    },
+      },
     "/contacts/{id}": {
       "get": {
     "summary": "Get a contact by ID",
@@ -125,4 +142,3 @@
       }
     }
   }
-}
