@@ -18,21 +18,16 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "contacts": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "_id": { "type": "string", "example": "69aab6e0c7b8ebf6c9161f48" },
-                          "firstName": { "type": "string", "example": "Andrew" },
-                          "lastName": { "type": "string", "example": "Ssemanda" },
-                          "email": { "type": "string", "example": "andrew.ssemanda@email.com" },
-                          "favoriteColor": { "type": "string", "example": "Blue" },
-                          "birthday": { "type": "string", "format": "date", "example": "1995-03-12" }
-                        }
-                      }
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": { "type": "string", "example": "69aab6e0c7b8ebf6c9161f48" },
+                      "firstName": { "type": "string", "example": "Andrew" },
+                      "lastName": { "type": "string", "example": "Ssemanda" },
+                      "email": { "type": "string", "example": "andrew.ssemanda@email.com" },
+                      "favoriteColor": { "type": "string", "example": "Blue" },
+                      "birthday": { "type": "string", "format": "date", "example": "1995-03-12" }
                     }
                   }
                 }
